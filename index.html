@@ -1,15 +1,284 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Biomassa</title>
-        <link rel="stylesheet" type="text/css" href="./styles/homepage.css">
-    </head>
-    <body>
-        
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Dashboard</title>
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        <script type="text/javascript" src="./scripts/homepage.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    </body>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f9;
+        }
+
+        /* Layout da página */
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Barra lateral (sidebar) */
+        .sidebar {
+            background-color: rgb(35, 36, 34);
+            /*padding: 20px;*/
+            color: white;
+            flex-direction: column;
+            justify-content: space-between;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-top: 0px;
+            margin-bottom: -80%;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            margin-top: 15px;
+            font-size: 24px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+        }
+
+        .sidebar ul li {
+            margin: 40.3px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: block;
+            padding: 10px 15px;
+            margin-left: 10px;
+            margin-right: 10px;
+            background-color: rgb(30, 34, 25);
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: rgba(95, 138, 8, 0.76);
+        }
+
+        /* Conteúdo principal */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .main-content h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* Cards de estatísticas */
+        .cards {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            width: 24%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            background: linear-gradient(to bottom, white 25%, rgb(149, 214, 17) 100%);
+            animation: gradient-animation 3s ease infinite;
+        }
+
+        @keyframes gradient-animation {
+            0% {
+                background-position: 50% 0%;
+            }¨
+
+            100% {
+                background-position: 50% 100%;
+            }
+        }
+
+        .card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 22px;
+            color: #27ae60;
+        }
+
+        /* Gráfico simulado */
+        .chart {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: auto;
+        }
+
+        canvas#energyChart {
+            margin: 20px;
+            max-width: 50%;
+            top: 0px;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            margin-left: 25%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Biomassa</h2>
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Calculadora</a></li>
+                <li><a href="#">Conversor</a></li>
+                <li><a href="#">Sobre a Biomassa</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1>Estatísticas Gerais</h1>
+            <p>Os dados apresentados referem-se especificamente ao Brasil</p><br><br>
+
+            <!-- Cards de estatísticas -->
+            <div class="cards">
+                <div class="card">
+                    <h3>Quantidade de Usinas de Biomassa</h3>
+                    <p>630</p>
+                </div>
+                <div class="card">
+                    <h3>Biomassa na Matriz Energética Brasileira</h3>
+                    <p>8,55%</p>
+                </div>
+                <div class="card">
+                    <h3>Principal Biomassa Utilizada</h3>
+                    <p>Cana-de-Açúcar</p>
+                </div>
+                <div class="card">
+                    <h3>Estado com mais Abundância</h3>
+                    <p>São Paulo</p>
+                </div>
+            </div>
+
+            <!-- Simulação de gráfico -->
+            <div class="chart">
+                <h3>Gráfico de Uso da Biomassa no Brasil</h3>
+                <p>CCEE e Unica (com dados do MME)</p>
+                <canvas id="myChart" width="400" height="150"></canvas>
+            </div><br><br><br>
+
+            <div class="chart">
+                <h3 style="justify-content: center; text-align: center;">Oferta Interna de Energia - 2023 (Balanço Energético)</h3>
+                <canvas id="energyChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const productivityChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017'],
+                datasets: [{
+                    label: 'kWh por Tonelada de Cana',
+                    data: [36.05, 39.77, 42.59, 45.86, 51.36, 51.23, 54.06, 55.62],
+                    backgroundColor: '#A4EA4F',
+                    borderColor: 'rgba(0, 0, 0, 0.5)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 30,
+                        max: 60,
+                        ticks: {
+                            stepSize: 5
+                        }
+                    }
+                },
+                responsive: true
+            }
+        });
+
+        const ctx2 = document.getElementById('energyChart').getContext('2d');
+        const energyChart = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: [
+                    'Petróleo e Derivados',
+                    'Biomassa da Cana',
+                    'Hidráulica',
+                    'Gás Natural',
+                    'Lenha e Carvão Vegetal',
+                    'Lixívia e Outros Renováveis',
+                    'Carvão Mineral',
+                    'Eólica',
+                    'Urânio',
+                    'Solar',
+                    'Outras Não Renováveis'
+                ],
+
+                datasets: [{
+                    label: 'Oferta Interna de Energia (%)',
+                    data: [35.7, 15.4, 12.5, 10.5, 9, 7, 4.6, 2.3, 1.3, 1.2, 0.6],
+                    backgroundColor: [
+                        'rgb(9, 92, 6)',
+                        'rgb(10, 124, 6)',
+                        'rgb(13, 148, 8)',
+                        'rgb(15, 167, 10)',
+                        'rgb(18, 190, 12)',
+                        'rgb(18, 212, 11)',
+                        'rgb(20, 238, 12)',
+                        'rgb(38, 250, 30)',
+                        'rgb(53, 250, 46)',
+                        'rgb(72, 247, 66)',
+                        'rgb(90, 243, 85)',
+                    ],
+
+                    borderColor: [
+                        '#FFFFFF'
+                    ],
+
+                    borderWidth: 1
+                }]
+            },
+
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                }
+            }
+        });
+    </script>
+</body>
 </html>
