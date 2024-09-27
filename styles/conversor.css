@@ -1,0 +1,72 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f9;
+}
+
+.my-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Barra lateral (sidebar) */
+.sidebar {
+    background-color: rgb(33, 34, 32);
+    /*padding: 20px;*/
+    color: white;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 0px;
+    margin-bottom: -80%;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 15px;
+    font-size: 24px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+}
+
+.sidebar ul li {
+    margin: 40.3px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    padding: 10px 15px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: rgb(30, 34, 25);
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+    background-color: rgba(95, 138, 8, 0.76);
+}
+
+/* Conteúdo principal */
+.main-content {
+    flex: 1;
+    padding: 30px;
+}
+
+.main-content h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
