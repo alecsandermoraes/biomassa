@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function calcEnergy(materialSelect, massSelect) {
         const e = data[materialSelect].poder * massSelect;
-        return e / 860.4;
+        return e / 860.421;
     }
 
     function calcTime(energy) {
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const times = calcTime(energy);
 
             result.innerHTML = `
-                <p>A energia gerada por ${massSelect} kg de ${data[materialSelect].nome} é de <strong>${energy.toFixed(2)} kCal</strong>.</p>
+                <p>A energia gerada por ${massSelect} kg de ${data[materialSelect].nome} é de <strong>${energy.toFixed(2)} kWh</strong>.</p>
                 <p>Com essa energia, é possível manter uma lâmpada de LED ligada entre <strong>${times.lampada.max.toFixed(2)}</strong> e <strong>${times.lampada.min.toFixed(2)}</strong> horas.</p>
                 <p>Também é possível manter uma casa simples abastecida entre <strong>${times.casa.max.toFixed(2)}</strong> e <strong>${times.casa.min.toFixed(2)}</strong> horas.</p>
             `;
