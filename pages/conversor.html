@@ -25,7 +25,7 @@
                 <div class="input-group mb-3 d-flex align-items-center">
                     <span style="margin-right: 10px;">Digite:</span>
                     <input type="text" id="quantity" class="form-control" placeholder="Quantidade de Energia" style="margin-right: 10px; width: 200px">
-                    <select class="custom-select" id="converter" style="width: 250px; height: 39px">
+                    <select class="custom-select" id="energy" style="width: 250px; height: 39px">
                       <option selected>Unidade</option>
                       <option value="quilowatt">Quilowatt-hora (kWh)</option>
                       <option value="watt">Watt-hora (Wh)</option>
@@ -36,6 +36,8 @@
                       <option value="megajoule">Megajoule (MJ)</option>
                     </select>
                 </div>
+                <button type="button" class="btn btn-outline-success" onclick="Convert()">Converter</button>
+                <div id="resultado" style="margin-top: 20px;"></div>
             </div>
         </div>
 
