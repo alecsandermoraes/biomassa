@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const times = calcTime(energy);
 
         const data2 = {
-            labels: ['Grande Hotel', 'Empresa Média', 'Indústria de Grande Porte', `${massSelect} kg de ${data[materialSelect].nome}`],
+            labels: ['Grande Hotel', 'Empresa Média', 'Indústria de Grande Porte', `Energia de ${massSelect} kg de ${data[materialSelect].nome}`],
             datasets: [{
                 label: 'Consumo de Energia (kWh)',
                 data: [300000, 500000, 5000000, energy],
