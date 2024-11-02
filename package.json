@@ -19,5 +19,8 @@
   "homepage": "https://github.com/alecsandermoraes/biomassa#readme",
   "devDependencies": {
     "electron": "^32.1.2"
+  },
+  "dependencies": {
+    "electron-packager": "^17.1.2"
   }
 }
