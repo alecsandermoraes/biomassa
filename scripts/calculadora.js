@@ -23,6 +23,58 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function formatCO2(valueInKg) {
+        if (valueInKg >= 1000) {
+            return (valueInKg / 1000).toFixed(2) + ' toneladas';
+        } else {
+            return valueInKg.toFixed(2) + ' kg';
+        }
+    }
+
+    function calcCO2Reduction(energyGenerated) {
+        const emissionFactors = {
+            coal: 820,
+            gas: 490,
+            diesel: 720,
+        };
+
+        const reduction = {
+            coal: (emissionFactors.coal * energyGenerated) / 1000,
+            gas: (emissionFactors.gas * energyGenerated) / 1000,
+            diesel: (emissionFactors.diesel * energyGenerated) / 1000,
+        };
+
+        return {
+            coal: formatCO2(reduction.coal),
+            gas: formatCO2(reduction.gas),
+            diesel: formatCO2(reduction.diesel),
+        }
+    }
+
+    function formatEnergy(valueInKWh) {
+        if (valueInKWh >= 1_000_000) {
+            return (valueInKWh / 1_000_000).toFixed(2) + ' GWh';
+        } else if (valueInKWh >= 1000) {
+            return (valueInKWh / 1000).toFixed(2) + ' MWh';
+        } else {
+            return valueInKWh.toFixed(2) + ' kWh';
+        }
+    }
+
+    function formatTime(valueInHours) {
+        if (valueInHours >= 87600) {
+            return (valueInHours / 87600).toFixed(2) + ' séculos';
+        } else if (valueInHours >= 8760) {
+            return (valueInHours / 8760).toFixed(2) + ' décadas';
+        } else if (valueInHours >= 730) {
+            return (valueInHours / 730).toFixed(2) + ' anos';
+        } else if (valueInHours >= 24) {
+            return (valueInHours / 24).toFixed(2) + ' meses';
+        } else {
+            return valueInHours.toFixed(2) + ' horas';
+        }
+    }
+
     window.Calc = function() {
         const materialSelect = document.getElementById('material').value;
         const massSelect = parseFloat(document.getElementById('quantity').value);
@@ -30,6 +82,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const energy = calcEnergy(materialSelect, massSelect);
         const times = calcTime(energy);
+        const reduction = calcCO2Reduction(energy);
+
+        const formattedEnergy = formatEnergy(energy);
+        const formattedLampMin = formatTime(times.lampada.min);
+        const formattedLampMax = formatTime(times.lampada.max);
+        const formattedCasaMin = formatTime(times.casa.min);
+        const formattedCasaMax = formatTime(times.casa.max);
 
         const data2 = {
             labels: ['Grande Hotel', 'Empresa Média', 'Indústria de Grande Porte', `Energia de ${massSelect} kg de ${data[materialSelect].nome}`],
@@ -53,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     tooltip: {
                         callbacks: {
-                            label: (context) => `${context.raw.toLocaleString()} kWh`,
+                            label: (context) => `${formatEnergy(context.raw)}`,
                         }
                     }
                 },
@@ -62,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            callback: (value) => value.toLocaleString() + ' kWh',
+                            callback: (value) => formatEnergy(value),
                         }
                     }
                 }
@@ -71,11 +130,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (materialSelect && !isNaN(massSelect)) {
             result.innerHTML = `
-                <p>A energia gerada por ${massSelect} kg de ${data[materialSelect].nome} é de <strong>${energy.toFixed(2)} kWh</strong>.</p>
-                <p>Com essa energia, é possível manter uma lâmpada de LED ligada entre <strong>${times.lampada.max.toFixed(2)}</strong> e <strong>${times.lampada.min.toFixed(2)}</strong> horas.</p>
-                <p>Também é possível manter uma casa simples abastecida entre <strong>${times.casa.max.toFixed(2)}</strong> e <strong>${times.casa.min.toFixed(2)}</strong> horas.</p>
+                A energia gerada por ${massSelect} kg de ${data[materialSelect].nome} é de <strong>${formattedEnergy}</strong><br>
+                Com essa energia, é possível manter uma lâmpada de LED ligada entre <strong>${formattedLampMin}</strong> e <strong>${formattedLampMax}</strong><br>
+                Também é possível manter uma casa simples abastecida entre <strong>${formattedCasaMax}</strong> e <strong>${formattedCasaMin}</strong><br>
 
-                <h1 style="margin-bottom: 20px;">Consumo de Energia (kWh)</h1>
+                <h1 style="margin-bottom: 20px; margin-top: 20px">Redução de Gases Poluentes</h1>
+                Terá uma redução de <strong>${reduction.coal}</strong> de CO₂ na atmosfera, substituindo o uso do <strong>carvão</strong><br>
+                Terá uma redução de <strong>${reduction.gas}</strong> de CO₂ na atmosfera, substituindo o uso do <strong>gás natural</strong><br>
+                Terá uma redução de <strong>${reduction.diesel}</strong> de CO₂ na atmosfera, substituindo o uso do <strong>diesel</strong><br>
+
+                <h1 style="margin-bottom: 20px; margin-top: 20px;">Consumo de Energia (kWh)</h1>
             `;
 
             if (chartInstance) {
